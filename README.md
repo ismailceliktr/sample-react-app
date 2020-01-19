@@ -1,5 +1,15 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## An Important Note
+
+Don't forget! This app is not using a database. You have to use "db.json" file for your datas. Before using "npm start", run this on your terminal/cmd:
+
+### `json-server --watch api/db.json --port 3004`
+
+After this you can use:
+
+### `npm start`
+
 ## Available Scripts
 
 In the project directory, you can run:
