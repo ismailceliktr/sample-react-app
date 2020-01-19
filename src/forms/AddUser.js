@@ -23,12 +23,20 @@ class AddUser extends Component {
         visible: false,
         name: "",
         department: "",
-        salary: ""
+        salary: "",
+        error: false
     }
     changeVisibility = (e) => {
         this.setState({
             visible: !this.state.visible
         });
+    }
+    validateForm = () => {
+        const {name, salary, department} = this.state;
+        if(name === "" || salary === "" || department ===""){
+            return false;
+        }
+        return true;
     }
     changeInput = (e) => {
         this.setState({
@@ -58,13 +66,19 @@ class AddUser extends Component {
             salary,
             department
         }
+        if(!this.validateForm()){
+            this.setState({
+                error: true
+            });
+            return;
+        }
         const response = await axios.post("http://localhost:3004/users", newUser);
         dispatch({ type: "ADD_USER", payload: response.data });
         //Ana sayfaya Redirect yapıyoruz.
         this.props.history.push("/");
     }
     render() {
-        const { visible, name, salary, department } = this.state;
+        const { visible, name, salary, department, error } = this.state;
         return <UserConsumer> 
         {
             value => {
@@ -78,6 +92,11 @@ class AddUser extends Component {
                                     <h4>Add User Form</h4>
                                 </div>
                                 <div className="card-body">
+                                    {
+                                        error ? 
+                                        <div className="alert alert-danger">Lütfen girdiğiniz bilgileri kontrol ediniz.</div>
+                                        :null
+                                    }
                                     <form onSubmit={this.addUser.bind(this, dispatch)}>
                                         <div className="form-group">
                                             <label htmlFor="name">Name</label>
