@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "name": "İsmail ÇELİK",
+      "salary": "8001",
+      "department": "Bilişim",
+      "id": "uniq1"
+    },
+    {
+      "name": "Fadime ÇELİK",
+      "salary": "10000",
+      "department": "Bilişim",
+      "id": "dbfOQN7"
+    },
+    {
+      "name": "Burak Hakan ÇELİK",
+      "salary": "10000",
+      "department": "Bilişim",
+      "id": "3XD9ri1"
+    }
+  ]
+}
