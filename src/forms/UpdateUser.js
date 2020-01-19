@@ -6,7 +6,8 @@ class UpdateUser extends Component {
     state = {
         name: "",
         department: "",
-        salary: ""
+        salary: "",
+        error: false
     }
     changeInput = (e) => {
         this.setState({
@@ -14,9 +15,9 @@ class UpdateUser extends Component {
         });
     }
     componentDidMount = async () => {
-        const {id} = this.props.match.params;
+        const { id } = this.props.match.params;
         const response = await axios.get(`http://localhost:3004/users/${id}`);
-        const { name, salary, department} = response.data;
+        const { name, salary, department } = response.data;
 
         this.setState({
             name,
@@ -24,24 +25,36 @@ class UpdateUser extends Component {
             department
         });
     }
-    
+    validateForm = () => {
+        const { name, salary, department } = this.state;
+        if (name === "" || salary === "" || department === "") {
+            return false;
+        }
+        return true;
+    }
     updateUser = async (dispatch, e) => {
         e.preventDefault();
         //Update User
-        const {name, salary, department} = this.state;
-        const {id} = this.props.match.params;
+        const { name, salary, department } = this.state;
+        const { id } = this.props.match.params;
         const updatedUser = {
             name,
             salary,
             department
         };
+        if (!this.validateForm()) {
+            this.setState({
+                error: true
+            });
+            return;
+        }
         const response = await axios.put(`http://localhost:3004/users/${id}`, updatedUser);
-        dispatch({type: "UPDATE_USER", payload: response.data});
+        dispatch({ type: "UPDATE_USER", payload: response.data });
         //Ana sayfaya Redirect yapıyoruz.
         this.props.history.push("/");
     }
     render() {
-        const { name, salary, department } = this.state;
+        const { name, salary, department, error } = this.state;
         return <UserConsumer>
             {
                 value => {
@@ -53,6 +66,11 @@ class UpdateUser extends Component {
                                     <h4>Update User Form</h4>
                                 </div>
                                 <div className="card-body">
+                                    {
+                                        error ?
+                                            <div className="alert alert-danger">Lütfen girdiğiniz bilgileri kontrol ediniz.</div>
+                                            : null
+                                    }
                                     <form onSubmit={this.updateUser.bind(this, dispatch)}>
                                         <div className="form-group">
                                             <label htmlFor="name">Name</label>
